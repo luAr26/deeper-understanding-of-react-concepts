@@ -1,0 +1,34 @@
+.modal-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 50rem;
+  background-color: rgb(240, 239, 239);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-heading {
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 3px;
+}
+
+.modal-footer {
+  background-color: rgb(168, 165, 165);
+  padding: 1rem;
+  display: flex;
+  justify-content: flex-end;
+  border-radius: 3px;
+}
+
+.modal-footer button {
+  border: none;
+  padding: 0.5rem 1.5rem;
+  border-radius: 2px;
+  background-color: rgb(49, 49, 49);
+  color: #fff;
+  cursor: pointer;
+}

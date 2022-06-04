@@ -2,7 +2,7 @@ import { useRef } from "react";
 
 import classes from "./SimpleForm.module.scss";
 
-const SimpleForm = () => {
+const SimpleForm = ({ login }) => {
   // If we access values using refs => uncontrolled components
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
@@ -22,12 +22,15 @@ const SimpleForm = () => {
     e.preventDefault();
     // console.log(`The entered email is: ${enteredEmail}`);
     // console.log(`The entered password is: ${enteredPassword}`);
-    console.log(
-      `And using ref the value of the entered email is: ${emailInputRef.current.value}`
-    );
-    console.log(
-      `And using ref the value of the entered password is: ${passwordInputRef.current.value}`
-    );
+    if (
+      emailInputRef.current.value.trim() === "" ||
+      passwordInputRef.current.value.trim() === ""
+    ) {
+      console.log("You must enter valid input values.");
+
+      return;
+    }
+    login();
   };
   return (
     <form className={classes["simple-form"]} onSubmit={handleSubmit}>

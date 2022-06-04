@@ -1,7 +1,28 @@
 .simple-form {
+  max-width: 40rem;
   margin-top: 3rem;
+  border: 1px solid rgb(214, 213, 213);
+  padding: 2rem;
+  border-radius: 5px;
 }
 
 .control-container {
   margin-bottom: 1rem;
+
+  label,
+  input {
+    display: block;
+  }
+
+  label {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    border: 1px solid rgb(214, 213, 213);
+  }
 }

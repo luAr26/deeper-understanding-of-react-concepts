@@ -1,37 +1,44 @@
-import { useRef } from "react";
+import { useState, useEffect } from "react";
 
 import classes from "./SimpleForm.module.scss";
 
 const SimpleForm = ({ login }) => {
   // If we access values using refs => uncontrolled components
-  const emailInputRef = useRef();
-  const passwordInputRef = useRef();
+  // const emailInputRef = useRef();
+  // const passwordInputRef = useRef();
 
-  // const [enteredEmail, setEnteredEmail] = useState("");
-  // const [enteredPassword, setEnteredPassword] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
+  const [enteredPassword, setEnteredPassword] = useState("");
+  const [formIsInvalid, setFormIsInvalid] = useState(true);
 
-  // const handlePasswordChange = (e) => {
-  //   setEnteredPassword(e.target.value);
-  // };
+  useEffect(() => {
+    console.log("Use effect is running");
 
-  // const handleEmailChange = (e) => {
-  //   setEnteredEmail(e.target.value);
-  // };
+    if (
+      enteredEmail.indexOf("@") !== -1 &&
+      enteredPassword.trim().length >= 7
+    ) {
+      setFormIsInvalid(false);
+    }
+  }, [enteredEmail, enteredPassword]);
+
+  const handlePasswordChange = (e) => {
+    setEnteredPassword(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setEnteredEmail(e.target.value);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log(`The entered email is: ${enteredEmail}`);
-    // console.log(`The entered password is: ${enteredPassword}`);
-    if (
-      emailInputRef.current.value.trim() === "" ||
-      passwordInputRef.current.value.trim() === ""
-    ) {
-      console.log("You must enter valid input values.");
-
+    if (formIsInvalid) {
+      console.log("Please enter correct values in the form fields");
       return;
     }
     login();
   };
+
   return (
     <form className={classes["simple-form"]} onSubmit={handleSubmit}>
       <div className={classes["control-container"]}>
@@ -40,9 +47,9 @@ const SimpleForm = ({ login }) => {
           type="email"
           id="email"
           name="enteredEmail"
-          // value={enteredEmail}
-          // onChange={handleEmailChange}
-          ref={emailInputRef}
+          value={enteredEmail}
+          onChange={handleEmailChange}
+          // ref={emailInputRef}
         />
       </div>
       <div className={classes["control-container"]}>
@@ -51,12 +58,14 @@ const SimpleForm = ({ login }) => {
           type="password"
           id="password"
           name="enteredPassword"
-          // value={enteredPassword}
-          // onChange={handlePasswordChange}
-          ref={passwordInputRef}
+          value={enteredPassword}
+          onChange={handlePasswordChange}
+          // ref={passwordInputRef}
         />
       </div>
-      <button type="submit">Login</button>
+      <button type="submit" disabled={formIsInvalid}>
+        Login
+      </button>
     </form>
   );
 };

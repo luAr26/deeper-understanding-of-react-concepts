@@ -11,8 +11,19 @@ const SimpleForm = ({ login }) => {
   const [enteredPassword, setEnteredPassword] = useState("");
   const [formIsInvalid, setFormIsInvalid] = useState(true);
 
+  // What to add & not to add as dependencies in the useEffect hook
+  // You should add "everything" you use in the effect function as dependency, with a FEW exceptions:
+  // 1. You don't need to add state updating functions
+  // 2. You don't need to add "built-in" API or function (e.g. localStorage, setTimeout)
+  // 3. You don't need to add variables or function you might've defined OUTSIDE of your components
+
+  // So long story short: must must add all "things" you use in your effect function if those "things"
+  // could change because your component (or some parent component) re-rendered.
+  // That's why variables or state defined in component functions, props or function defined in component functions have
+  // to be added as dependencies
+
   useEffect(() => {
-    console.log("Use effect is running");
+    console.log("Checking form validity!");
 
     if (
       enteredEmail.indexOf("@") !== -1 &&

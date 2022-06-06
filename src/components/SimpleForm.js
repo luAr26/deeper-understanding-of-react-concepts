@@ -23,14 +23,21 @@ const SimpleForm = ({ login }) => {
   // to be added as dependencies
 
   useEffect(() => {
-    console.log("Checking form validity!");
+    // Debouncing
+    const identifier = setTimeout(() => {
+      console.log("Checking form validity!");
+      setFormIsInvalid(
+        !(
+          enteredEmail.indexOf("@") !== -1 && enteredPassword.trim().length >= 7
+        )
+      );
+    }, 500);
 
-    if (
-      enteredEmail.indexOf("@") !== -1 &&
-      enteredPassword.trim().length >= 7
-    ) {
-      setFormIsInvalid(false);
-    }
+    return () => {
+      console.log("CLEANUP");
+
+      clearTimeout(identifier);
+    };
   }, [enteredEmail, enteredPassword]);
 
   const handlePasswordChange = (e) => {

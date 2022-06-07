@@ -1,14 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 
 import classes from "./SimpleForm.module.scss";
+
+const emailReducer = (lastStateSnapshot, action) => {
+  if (action.type === "EMAIL_USER_INPUT") {
+    return { value: action.val, isValid: action.val.indexOf("@") !== -1 };
+  }
+  return { value: "", isValid: false };
+};
+
+const passwordReducer = (lastStateSnapshot, action) => {
+  if (action.type === "PASSWORD_USER_INPUT") {
+    return { value: action.val, isValid: action.val.trim().length > 6 };
+  }
+
+  return { value: "", isValid: false };
+};
 
 const SimpleForm = ({ login }) => {
   // If we access values using refs => uncontrolled components
   // const emailInputRef = useRef();
   // const passwordInputRef = useRef();
 
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredPassword, setEnteredPassword] = useState("");
+  const [emailState, dispatchEmail] = useReducer(emailReducer, {
+    value: "",
+    isValid: false,
+  });
+
+  const [passwordState, dispatchPassword] = useReducer(passwordReducer, {
+    value: "",
+    isValid: false,
+  });
   const [formIsInvalid, setFormIsInvalid] = useState(true);
 
   // What to add & not to add as dependencies in the useEffect hook
@@ -26,11 +48,7 @@ const SimpleForm = ({ login }) => {
     // Debouncing
     const identifier = setTimeout(() => {
       console.log("Checking form validity!");
-      setFormIsInvalid(
-        !(
-          enteredEmail.indexOf("@") !== -1 && enteredPassword.trim().length >= 7
-        )
-      );
+      setFormIsInvalid(!(emailState.isValid && passwordState.isValid));
     }, 500);
 
     return () => {
@@ -38,14 +56,14 @@ const SimpleForm = ({ login }) => {
 
       clearTimeout(identifier);
     };
-  }, [enteredEmail, enteredPassword]);
+  }, [emailState, passwordState]);
 
   const handlePasswordChange = (e) => {
-    setEnteredPassword(e.target.value);
+    dispatchPassword({ type: "PASSWORD_USER_INPUT", val: e.target.value });
   };
 
   const handleEmailChange = (e) => {
-    setEnteredEmail(e.target.value);
+    dispatchEmail({ type: "EMAIL_USER_INPUT", val: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -65,7 +83,7 @@ const SimpleForm = ({ login }) => {
           type="email"
           id="email"
           name="enteredEmail"
-          value={enteredEmail}
+          value={emailState.value}
           onChange={handleEmailChange}
           // ref={emailInputRef}
         />
@@ -76,7 +94,7 @@ const SimpleForm = ({ login }) => {
           type="password"
           id="password"
           name="enteredPassword"
-          value={enteredPassword}
+          value={passwordState.value}
           onChange={handlePasswordChange}
           // ref={passwordInputRef}
         />

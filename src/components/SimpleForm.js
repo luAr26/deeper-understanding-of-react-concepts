@@ -44,19 +44,20 @@ const SimpleForm = ({ login }) => {
   // That's why variables or state defined in component functions, props or function defined in component functions have
   // to be added as dependencies
 
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
   useEffect(() => {
     // Debouncing
     const identifier = setTimeout(() => {
       console.log("Checking form validity!");
-      setFormIsInvalid(!(emailState.isValid && passwordState.isValid));
+      setFormIsInvalid(!(emailIsValid && passwordIsValid));
     }, 500);
 
     return () => {
       console.log("CLEANUP");
-
       clearTimeout(identifier);
     };
-  }, [emailState, passwordState]);
+  }, [emailIsValid, passwordIsValid]);
 
   const handlePasswordChange = (e) => {
     dispatchPassword({ type: "PASSWORD_USER_INPUT", val: e.target.value });

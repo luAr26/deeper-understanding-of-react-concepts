@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useContext } from "react";
+import AuthContext from "../context/auth-context";
 
-const LogoutButton = ({ logout }) => {
+const LogoutButton = () => {
+  const ctx = useContext(AuthContext);
   return (
     <>
-      <button type="button" onClick={() => logout()}>
+      <button type="button" onClick={() => ctx.logout()}>
         Logout
       </button>
     </>

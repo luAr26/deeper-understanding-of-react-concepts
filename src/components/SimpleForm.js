@@ -1,4 +1,5 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useContext } from "react";
+import AuthContext from "../context/auth-context";
 
 import classes from "./SimpleForm.module.scss";
 
@@ -17,10 +18,11 @@ const passwordReducer = (lastStateSnapshot, action) => {
   return { value: "", isValid: false };
 };
 
-const SimpleForm = ({ login }) => {
+const SimpleForm = () => {
   // If we access values using refs => uncontrolled components
   // const emailInputRef = useRef();
   // const passwordInputRef = useRef();
+  const ctx = useContext(AuthContext);
 
   const [emailState, dispatchEmail] = useReducer(emailReducer, {
     value: "",
@@ -73,7 +75,7 @@ const SimpleForm = ({ login }) => {
       console.log("Please enter correct values in the form fields");
       return;
     }
-    login();
+    ctx.login();
   };
 
   return (

@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer, useContext } from "react";
+import { useState, useEffect, useReducer, useContext, useRef } from "react";
 import AuthContext from "../context/auth-context";
 import InputComponent from "./InputComponent";
 
@@ -49,6 +49,10 @@ const SimpleForm = () => {
 
   const { isValid: emailIsValid } = emailState;
   const { isValid: passwordIsValid } = passwordState;
+
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+
   useEffect(() => {
     // Debouncing
     const identifier = setTimeout(() => {
@@ -72,16 +76,19 @@ const SimpleForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (formIsInvalid) {
-      console.log("Please enter correct values in the form fields");
-      return;
+    if (!formIsInvalid) {
+      ctx.login();
+    } else if (!emailIsValid) {
+      emailInputRef.current.focus();
+    } else {
+      passwordInputRef.current.focus();
     }
-    ctx.login();
   };
 
   return (
     <form className={classes["simple-form"]} onSubmit={handleSubmit}>
       <InputComponent
+        ref={emailInputRef}
         id="email"
         label="Email"
         type="email"
@@ -90,6 +97,7 @@ const SimpleForm = () => {
         onChangeHandler={handleEmailChange}
       />
       <InputComponent
+        ref={passwordInputRef}
         id="password"
         label="Password"
         type="password"
@@ -97,9 +105,7 @@ const SimpleForm = () => {
         value={passwordState.value}
         onChangeHandler={handlePasswordChange}
       />
-      <button type="submit" disabled={formIsInvalid}>
-        Login
-      </button>
+      <button type="submit">Login</button>
     </form>
   );
 };

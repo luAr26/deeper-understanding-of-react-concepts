@@ -1,5 +1,6 @@
 import { useState, useEffect, useReducer, useContext } from "react";
 import AuthContext from "../context/auth-context";
+import InputComponent from "./InputComponent";
 
 import classes from "./SimpleForm.module.scss";
 
@@ -80,28 +81,22 @@ const SimpleForm = () => {
 
   return (
     <form className={classes["simple-form"]} onSubmit={handleSubmit}>
-      <div className={classes["control-container"]}>
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          name="enteredEmail"
-          value={emailState.value}
-          onChange={handleEmailChange}
-          // ref={emailInputRef}
-        />
-      </div>
-      <div className={classes["control-container"]}>
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="enteredPassword"
-          value={passwordState.value}
-          onChange={handlePasswordChange}
-          // ref={passwordInputRef}
-        />
-      </div>
+      <InputComponent
+        id="email"
+        label="Email"
+        type="email"
+        name="enteredEmail"
+        value={emailState.value}
+        onChangeHandler={handleEmailChange}
+      />
+      <InputComponent
+        id="password"
+        label="Password"
+        type="password"
+        name="enteredPassword"
+        value={passwordState.value}
+        onChangeHandler={handlePasswordChange}
+      />
       <button type="submit" disabled={formIsInvalid}>
         Login
       </button>
